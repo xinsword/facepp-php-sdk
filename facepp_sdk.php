@@ -75,7 +75,11 @@ class Facepp
         curl_setopt($curl_handle, CURLOPT_POST, true);
 
         if (array_key_exists('img', $request_body)) {
-            $request_body['img'] = '@' . $request_body['img'];
+           if(class_exists('\CURLFile')){
+                $request_body['img'] = new \CURLFile(realpath($request_body['img'])); 
+            }else{
+                $request_body['img'] = '@' . $request_body['img'];
+            }
         } else {
             $request_body = http_build_query($request_body);
         }
